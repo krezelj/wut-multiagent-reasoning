@@ -77,6 +77,15 @@ class Literal(Node):
         return bool(values[self.literal])
 
 
+def validate_parentheses(expression):
+    level = 0
+    for c in expression:
+        if c == '(': level += 1
+        if c == ')': level -= 1
+        if level < 0: return False
+    return level == 0
+
+
 def split_args(args_str: str) -> list[str]:
     start = 0
     level = 0
@@ -92,6 +101,8 @@ def split_args(args_str: str) -> list[str]:
 
 
 def parse_expression(expression: str) -> Node:
+    assert(validate_parentheses(expression))
+    
     expression = expression.lower().replace(' ', '')
     tmp = re.sub(r'^.*?\(', '', expression)
     args_str = re.sub(r'\)$', '', tmp)
@@ -120,23 +131,7 @@ def parse_expression(expression: str) -> Node:
 
 
 def main():
-    exp = 'and(imp(p, q), imp(q, p))'
-    node = parse_expression(exp)
-
-    print(node({'p': 0, 'q': 0}))
-    print(node({'p': 0, 'q': 1}))
-    print(node({'p': 1, 'q': 0}))
-    print(node({'p': 1, 'q': 1}))
-
-    # print(node({'p': 0, 'q': 0, 'r': 0}))
-    # print(node({'p': 0, 'q': 1, 'r': 0}))
-    # print(node({'p': 1, 'q': 0, 'r': 0}))
-    # print(node({'p': 1, 'q': 1, 'r': 0}))
-    # print(node({'p': 0, 'q': 0, 'r': 1}))
-    # print(node({'p': 0, 'q': 1, 'r': 1}))
-    # print(node({'p': 1, 'q': 0, 'r': 1}))
-    # print(node({'p': 1, 'q': 1, 'r': 1}))
-
+    pass
 
 
 if __name__ == '__main__':
