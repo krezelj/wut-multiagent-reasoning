@@ -1,8 +1,8 @@
-from utils import *
-from state import *
-from statements import *
-from expressions import *
-from agent_group import *
+from core.utils import *
+from core.state import *
+from core.statements import *
+from core.expressions import *
+from core.agent_group import *
 
 
 class Model:
@@ -55,13 +55,6 @@ class Model:
             raise Exception("No viable initials states")
 
     def res(self, action: str, agents: AgentGroup, state: State) -> list[State]:
-        # get res0 set --> set of all states which satisfy the AND of all post conditions of effect statements
-        # using XOR determine the fluents that changed
-        # set bits corresponding to nonintertial fluents to 0 using mask
-        # set all bits corresponding to released fluents to 1
-        # determine inclusion minimal new states
-        # return them
-
         # get all applicable effect and release statements
         is_statement_applicable = \
             lambda e : state.models(e.pre_condition) and agents.models(e.agent_condition) and e.action == action.lower()
@@ -69,7 +62,7 @@ class Model:
         releases = [e for e in self.release_statements if is_statement_applicable(e)]
 
         # get res0 set -- set of all states resulting from effects that satisfy the aggregated post condition
-        # if post_conditon is empty (no effects found) the And will always return true for all states
+        # if post_conditon is empty (no effects found) the 'And' will always return true for all states
         # after the minimisation they will be reduced to only the current state (unless some releases also happen)
         post_condition = And([e.post_condition for e in effects])
         res0 = [s for s in self.states if s.models(post_condition)]
@@ -82,10 +75,10 @@ class Model:
             released[r.fluent] = True
         released_mask = values2enc(released, self.fluents)
         
-        # get difference between new states and the current states
+        # get difference between new states and the current states ('new' function)
         new = [(state.encoding ^ s.encoding) & (~self.nonintertial_mask) | released_mask for s in res0]
 
-        # determine inclusion minimal
+        # determine inclusion minimal differences
         result_states = []
         for i in range(len(res0)):
             for j in range(len(res0)):

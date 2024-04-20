@@ -1,4 +1,4 @@
-from expressions import Node
+from core.expressions import Node
 
 
 class AgentGroup:

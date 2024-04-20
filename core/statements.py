@@ -1,4 +1,4 @@
-from expressions import parse_expression
+from core.expressions import parse_expression
 
 
 class InitialisationStatement:

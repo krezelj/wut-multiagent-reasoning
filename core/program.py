@@ -1,8 +1,5 @@
-from typing import Optional
-from agent_group import AgentGroup
-from model import Model
-
-
+from core.agent_group import AgentGroup
+from core.model import Model
 
 
 class Program:
@@ -15,6 +12,9 @@ class Program:
     
     def __len__(self):
         return len(self.program)
+    
+    def run_from(self, condition, model) -> 'TransitionNode':
+        pass
 
 
 class TransitionNode:
