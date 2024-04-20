@@ -7,9 +7,8 @@ from agent_group import *
 
 class Model:
 
-    def __init__(self, fluents: list[str], agents: list[str], domain) -> None:
-        self.fluents = fluents
-        self.agents = agents
+    def __init__(self, fluents: list[str], domain) -> None:
+        self.fluents = [f.lower() for f in fluents]
         self.domain = domain
         self.split_statements()
         self.generate_states()
@@ -17,16 +16,16 @@ class Model:
         self.set_initial_states()
 
     def split_statements(self) -> None:
-        self.init_statements: list[InitialisationStatement] = \
-            [s for s in self.domain if s is InitialisationStatement]
+        self.initialisation_statements: list[InitialisationStatement] = \
+            [s for s in self.domain if type(s) is InitialisationStatement]
         self.effect_statements: list[EffectStatement] = \
-            [s for s in self.domain if s is EffectStatement]
+            [s for s in self.domain if type(s) is EffectStatement]
         self.release_statements: list[ReleaseStatement] = \
-            [s for s in self.domain if s is ReleaseStatement]
+            [s for s in self.domain if type(s) is ReleaseStatement]
         self.constraint_statements: list[ConstraintStatement] = \
-            [s for s in self.domain if s is ConstraintStatement]
+            [s for s in self.domain if type(s) is ConstraintStatement]
         self.spec_statements: list[SpecificationStatement] = \
-            [s for s in self.domain if s is SpecificationStatement]
+            [s for s in self.domain if type(s) is SpecificationStatement]
 
     def generate_states(self) -> None:
         self.states: list[State] = []
@@ -48,7 +47,7 @@ class Model:
 
     def set_initial_states(self) -> None:
         self.initial_states = []
-        condition = And([s.condition for s in self.init_statements])
+        condition = And([s.condition for s in self.initialisation_statements])
         for s in self.states:
             if s.models(condition):
                 self.initial_states.append(s)
@@ -65,7 +64,7 @@ class Model:
 
         # get all applicable effect and release statements
         is_statement_applicable = \
-            lambda e : state.models(e.pre_condition) and agents.models(e.agent_condition) and e.action == action
+            lambda e : state.models(e.pre_condition) and agents.models(e.agent_condition) and e.action == action.lower()
         effects = [e for e in self.effect_statements if is_statement_applicable(e)]
         releases = [e for e in self.release_statements if is_statement_applicable(e)]
 
@@ -96,3 +95,7 @@ class Model:
             else: # finally, if nothing is a strict subset of new[i]
                 result_states.append(res0[i])
         return result_states
+    
+    def get_states_that_model(self, condition):
+        return [s for s in self.states if s.models(condition)]
+    
