@@ -22,7 +22,6 @@ class Not(Node):
 class And(Node):
 
     def __init__(self, children) -> None:
-        assert(len(children) > 0)
         self.children = children
 
     def __call__(self, values: dict) -> bool:
@@ -35,7 +34,6 @@ class And(Node):
 class Or(Node):
 
     def __init__(self, children) -> None:
-        assert(len(children) > 0)
         self.children = children
 
     def __call__(self, values: dict) -> bool:
@@ -74,6 +72,10 @@ class Literal(Node):
         self.literal = args[0]
 
     def __call__(self, values: dict) -> bool:
+        if self.literal == 'true':
+            return True
+        if self.literal == 'false':
+            return False
         return bool(values[self.literal])
 
 
