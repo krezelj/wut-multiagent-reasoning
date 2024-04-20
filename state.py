@@ -8,9 +8,15 @@ class State:
 
     def models(self, condition: Node) -> bool:
         return condition(self.values)
+    
+    def __repr__(self):
+        return str(self.values)
 
 
 class ImpossibleState(State):
+
+    def __init__(self) -> None:
+        pass
 
     def models(self, condition: Node) -> bool:
         return False
