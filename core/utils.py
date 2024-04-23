@@ -17,3 +17,7 @@ def values2enc(values: dict, literals: list[str]) -> int:
 
 def is_strict_subset(a: int, b: int) -> bool:
     return (a | b == b) and (a != b)
+
+
+def is_subset(a: int, b: int) -> bool:
+    return a | b == b
