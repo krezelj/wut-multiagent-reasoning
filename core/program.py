@@ -13,9 +13,6 @@ class Program:
     def __len__(self):
         return len(self.program)
     
-    def run_from(self, condition, model) -> 'TransitionNode':
-        pass
-
 
 class TransitionNode:
     
@@ -23,11 +20,13 @@ class TransitionNode:
         self.state = state
         self.children = children
 
-    def run_program(self, program: Program, model: Model):
+    def run_program(self, program: Program, model: Model, force_execution: bool = False):
         if len(program) == 0:
             return
         
         # get next states using res and transform them into transition nodes
-        self.children = [TransitionNode(s) for s in model.res(program[0][0], program[0][1], self.state)]
+        self.action = program[0][0]
+        self.agents = program[0][1]
+        self.children = [TransitionNode(s) for s in model.res(self.action, self.agents, self.state, force_execution)]
         for child in self.children:
-            child.run_program(program[1:], model)
+            child.run_program(program[1:], model, force_execution)
