@@ -20,16 +20,16 @@ class Model:
         self.graph = Graph(self)
 
     def split_statements(self) -> None:
-        self.initialisation_statements: list[InitialisationStatement] = \
-            [s for s in self.domain if type(s) is InitialisationStatement]
-        self.effect_statements: list[EffectStatement] = \
-            [s for s in self.domain if type(s) is EffectStatement]
-        self.release_statements: list[ReleaseStatement] = \
-            [s for s in self.domain if type(s) is ReleaseStatement]
-        self.constraint_statements: list[ConstraintStatement] = \
-            [s for s in self.domain if type(s) is ConstraintStatement]
-        self.spec_statements: list[SpecificationStatement] = \
-            [s for s in self.domain if type(s) is SpecificationStatement]
+        self.initialisation_statements: list[Initialisation] = \
+            [s for s in self.domain if type(s) is Initialisation]
+        self.effect_statements: list[Effect] = \
+            [s for s in self.domain if type(s) is Effect]
+        self.release_statements: list[Release] = \
+            [s for s in self.domain if type(s) is Release]
+        self.constraint_statements: list[Constraint] = \
+            [s for s in self.domain if type(s) is Constraint]
+        self.spec_statements: list[Specification] = \
+            [s for s in self.domain if type(s) is Specification]
 
     def generate_states(self) -> None:
         self.states: list[State] = []

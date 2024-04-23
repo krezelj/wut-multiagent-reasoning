@@ -1,43 +1,44 @@
+from typing import Optional
 from core.expressions import parse_expression
 
 
-class InitialisationStatement:
+class Initialisation:
     # initially alpha
 
     def __init__(self, condition: str) -> None:
         self.condition = parse_expression(condition)
 
 
-class EffectStatement:
+class Effect:
     # A by phi causes alpha if pi
     # impossible A by phi if pi
     
 
-    def __init__(self, action: str, agent_condition: str, post_condition: str, pre_condition: str):
+    def __init__(self, action: str, agent_condition: str, post_condition: str, pre_condition: Optional[str] = None):
         self.action = action.lower()
         self.agent_condition = parse_expression(agent_condition)
         self.post_condition = parse_expression(post_condition)
-        self.pre_condition = parse_expression(pre_condition)
+        self.pre_condition = parse_expression(pre_condition) if pre_condition is not None else parse_expression('true')
 
 
-class ReleaseStatement:
+class Release:
     # A by phi releases f if pi
     
-    def __init__(self, action: str, agent_condition: str, fluent: str, pre_condition: str):
+    def __init__(self, action: str, agent_condition: str, fluent: str, pre_condition: Optional[str] = None):
         self.action = action.lower()
         self.agent_condition = parse_expression(agent_condition)
         self.fluent = fluent.lower()
-        self.pre_condition = parse_expression(pre_condition)
+        self.pre_condition = parse_expression(pre_condition) if pre_condition is not None else parse_expression('true')
 
 
-class ConstraintStatement:
+class Constraint:
     # always alpha
     
     def __init__(self, condition: str) -> None:
         self.condition = parse_expression(condition)
 
 
-class SpecificationStatement:
+class Specification:
     # nonintertial f
     
     def __init__(self, fluent: str) -> None:
