@@ -154,6 +154,6 @@ class SufficiencyQuery:
             return False
         
         for step in self.program.program:
-            if not is_subset(self.agents.encoding, step[1].encoding):
+            if not is_subset(step[1].encoding, self.agents.encoding):
                 return False
         return True
