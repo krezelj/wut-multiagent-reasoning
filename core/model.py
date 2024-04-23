@@ -9,8 +9,8 @@ class Model:
 
     def __init__(self, fluents: list[str], actions: list[str], agents: list[str], domain) -> None:
         self.fluents = [f.lower() for f in fluents]
-        self.actions = actions
-        self.agents = agents
+        self.actions = [a.lower() for a in actions]
+        self.agents = [a.lower() for a in agents]
         self.domain = domain
 
         self.split_statements()
@@ -116,10 +116,9 @@ class GraphNode:
 
 class Graph:
 
-
     def __init__(self, model: Model) -> None:
         self.nodes: list[GraphNode] = [GraphNode(state) for state in model.states]
         for node in self.nodes:
+            if isinstance(node.state, ImpossibleState):
+                continue
             node.find_neighbours(model, self.nodes)
-
-    

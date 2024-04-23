@@ -40,6 +40,7 @@ class ValueQuery:
         # so we can simply return necessary
         return self.necessary
 
+
 class ExecutabilityQuery:
     # necessary/possibly executable P from pi
     
@@ -63,11 +64,15 @@ class ExecutabilityQuery:
                 # leaf reached so the execution is *possible*
                 if not self.necessary:
                     return True
+                if self.necessary:
+                    continue
 
             if len(current.children) == 0:
                 # not a leaf but no children so the program is not neccessarily executable
                 if self.necessary:
                     return False
+                if not self.necessary:
+                    continue
                 
             # else has children
             stack.extend(current.children)

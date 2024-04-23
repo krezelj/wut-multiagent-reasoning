@@ -5,10 +5,14 @@ from core.utils import *
 
 class AgentGroup:
 
-    def __init__(self, values: Union[dict, list[str]], all_agents: list[str]) -> None:
+    def __init__(self, values: Union[dict[str, bool], list[str]], all_agents: list[str]) -> None:
+        all_agents = [a.lower() for a in all_agents]
         if isinstance(values, dict):
-            self.values = values
+            self.values = {
+                k.lower(): v for k, v in values.items()
+            }
         else:
+            values = [a.lower() for a in values]
             self.values = {a: a in values for a in all_agents}
         self.encoding = values2enc(self.values, all_agents)
 
