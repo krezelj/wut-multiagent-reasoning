@@ -142,4 +142,18 @@ class AccessabilityQuery:
 
 class SufficiencyQuery:
     # G sufficient for pi
-    pass
+    
+    def __init__(self, agents: AgentGroup, program: Program, pre_condition: Optional[str] = None):
+        self.agents = agents
+        self.program = program
+        self.exQ = ExecutabilityQuery(True, program, pre_condition)
+
+    def answer(self, model: Model) -> bool:
+        # if not necessarily executable return False
+        if not self.exQ.answer(model):
+            return False
+        
+        for step in self.program.program:
+            if not is_subset(self.agents.encoding, step[1].encoding):
+                return False
+        return True
