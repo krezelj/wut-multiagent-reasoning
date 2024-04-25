@@ -8,11 +8,12 @@ class Signature:
         self.actions = None
         self.agents = None
         pass
-    
+
 root = Tk()
 setProperties(root = root)
-FluentInput, ActionsInput, AgentsInput = signatureSection(root = root)
+FluentInput, ActionsInput, AgentsInput, SignatureWarningLabel = signatureSection(root = root)
 signature = Signature()
 signatureButton = Button(root,text="Apply Signature",command = lambda:readSignature(signature, FluentInput, ActionsInput, AgentsInput))
 signatureButton.grid(row=1, column=1)
+
 root.mainloop()
