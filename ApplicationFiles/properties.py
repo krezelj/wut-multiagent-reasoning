@@ -14,14 +14,17 @@ def setProperties(root:Tk):
     root.geometry(f"{window_width}x{window_height}+{x_coordinate}+{y_coordinate}")
 
 def signatureSection(root):
+    
     group_box = LabelFrame(root, text="Signature", font=(15))
-    group_box.grid(row=0, column=0)
+    SignatureWarningLabel = Label(root,text="ww",font=(12),foreground="red")
+    SignatureWarningLabel.grid(row=0, column=0)
+    
+    group_box.grid(row=1, column=0)
     group_box.grid_columnconfigure(0, pad=30, minsize=80)
     group_box.grid_columnconfigure(1, pad=30, minsize=400)
     group_box.grid_rowconfigure(0, minsize=30)
     group_box.grid_rowconfigure(1, minsize=30)
     group_box.grid_rowconfigure(2, minsize=30)
-    
     FluentLabel = Label(group_box, text="Fluents:", font=(15))
     ActionsLabel = Label(group_box, text="Actions:", font=(15))
     AgentsLabel = Label(group_box, text="Agents:", font=(15))
@@ -38,4 +41,4 @@ def signatureSection(root):
     ActionsInput.grid(row=1, column=1, sticky="ew", padx=15, pady=3)
     AgentsInput.grid(row=2, column=1, sticky="ew", padx=15, pady=3)
 
-    return FluentInput, ActionsInput, AgentsInput
+    return FluentInput, ActionsInput, AgentsInput, SignatureWarningLabel
