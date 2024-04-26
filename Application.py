@@ -11,9 +11,21 @@ class Signature:
 
 root = Tk()
 setProperties(root = root)
+
 FluentInput, ActionsInput, AgentsInput, SignatureWarningLabel = signatureSection(root = root)
 signature = Signature()
-signatureButton = Button(root,text="Apply Signature",command = lambda:readSignature(signature, FluentInput, ActionsInput, AgentsInput))
+def signatureAction():
+    SignatureWarningLabel.config(foreground="red")
+    try:
+         readSignature(signature, FluentInput, ActionsInput, AgentsInput)
+    except Exception as e:
+        SignatureWarningLabel.config(text=e.args[0])
+        return
+    SignatureWarningLabel.config(text="Correct Signature",foreground="green")
+    
+
+signatureButton = Button(root, text="Apply Signature", command = signatureAction)
 signatureButton.grid(row=1, column=1)
+
 
 root.mainloop()
