@@ -1,5 +1,6 @@
 from tkinter import *
 
+from ApplicationFiles.statement_form.AlwaysForm import AlwaysForm
 from ApplicationFiles.statement_form.EffectForm import EffectForm
 from ApplicationFiles.statement_form.ImpossibleForm import ImpossibleForm
 from ApplicationFiles.statement_form.ReleaseForm import ReleaseForm
@@ -11,7 +12,8 @@ class StatementForms:
         self.statement_types = {
             "Impossible": ImpossibleForm(root, statements_listbox),
             "Effect": EffectForm(root, statements_listbox),
-            "Release": ReleaseForm(root, statements_listbox)
+            "Release": ReleaseForm(root, statements_listbox),
+            "Always": AlwaysForm(root, statements_listbox)
         }
         self.current_form = None
         # Create a frame for the statement controls
