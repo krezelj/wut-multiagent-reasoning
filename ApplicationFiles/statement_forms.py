@@ -5,12 +5,14 @@ from ApplicationFiles.statement_form.EffectForm import EffectForm
 from ApplicationFiles.statement_form.ImpossibleForm import ImpossibleForm
 from ApplicationFiles.statement_form.NoninertialForm import NoninertialForm
 from ApplicationFiles.statement_form.ReleaseForm import ReleaseForm
+from ApplicationFiles.statement_form.InitiallyForm import InitiallyForm
 
 class StatementForms:
     def __init__(self, root, statements_listbox):
         self.root = root
         self.statements_listbox = statements_listbox
         self.statement_types = {
+            "Initially": InitiallyForm(root, statements_listbox),
             "Impossible": ImpossibleForm(root, statements_listbox),
             "Effect": EffectForm(root, statements_listbox),
             "Release": ReleaseForm(root, statements_listbox),
