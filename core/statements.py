@@ -1,12 +1,22 @@
 from typing import Optional
 from core.expressions import parse_expression
+from core.program import Program
 
 
-class Initialisation:
+class Value:
+
+    def __init__(self, observable: bool, condition: str, program: Program):
+        self.observable = observable
+        self.condition = parse_expression(condition)
+        self.program = program
+
+
+class Initialisation(Value):
     # initially alpha
 
     def __init__(self, condition: str) -> None:
-        self.condition = parse_expression(condition)
+        super().__init__(False, condition, Program([]))
+        # self.condition = parse_expression(condition)
 
 
 class Effect:

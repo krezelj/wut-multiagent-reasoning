@@ -20,16 +20,16 @@ class Model:
         self.graph = Graph(self)
 
     def split_statements(self) -> None:
-        self.initialisation_statements: list[Initialisation] = \
-            [s for s in self.domain if type(s) is Initialisation]
+        self.value_statements: list[Value] = \
+            [s for s in self.domain if isinstance(s, Value)]
         self.effect_statements: list[Effect] = \
-            [s for s in self.domain if type(s) is Effect]
+            [s for s in self.domain if isinstance(s, Effect)]
         self.release_statements: list[Release] = \
-            [s for s in self.domain if type(s) is Release]
+            [s for s in self.domain if isinstance(s, Release)]
         self.constraint_statements: list[Constraint] = \
-            [s for s in self.domain if type(s) is Constraint]
+            [s for s in self.domain if isinstance(s, Constraint)]
         self.spec_statements: list[Specification] = \
-            [s for s in self.domain if type(s) is Specification]
+            [s for s in self.domain if isinstance(s, Specification)]
 
     def generate_states(self) -> None:
         self.states: list[State] = []
@@ -50,13 +50,47 @@ class Model:
         self.nonintertial_mask = values2enc(self.nonintertial, self.fluents)
 
     def set_initial_states(self) -> None:
+        def satisfies_condition(root: TransitionNode, condition: Node, observable: bool):
+            if root.children is None:
+                return root.state.models(condition)
+            
+            for child in root.children:
+                satisifies = satisfies_condition(child, condition, observable)
+                if satisifies and observable:
+                    return True
+                if not satisifies and not observable: # necessary
+                    return False
+            # either all satisfy and not observable or none satisfy and observable
+            return not observable
+
+
+        # initial states = []
+        # for each state
+        #   for each value statement
+        #       check if any/all states after program satisfy condition
+        #       if not, break
+        #   else:
+        #       append state to inital states as all conditions were satisifed
         self.initial_states = []
-        condition = And([s.condition for s in self.initialisation_statements])
-        for s in self.states:
-            if s.models(condition):
-                self.initial_states.append(s)
+        for state in self.states:
+            for statement in self.value_statements:
+                node = TransitionNode(state)
+                node.run_program(statement.program, self)
+                if not satisfies_condition(node, statement.condition, statement.observable):
+                    break
+            else:
+                self.initial_states.append(state)
         if len(self.initial_states) == 0:
             raise Exception("No viable initials states")
+
+
+        # self.initial_states = []
+        # condition = And([s.condition for s in self.value_statements])
+        # for s in self.states:
+        #     if s.models(condition):
+        #         self.initial_states.append(s)
+        # if len(self.initial_states) == 0:
+        #     raise Exception("No viable initials states")
 
     def res(self, action: str, agents: AgentGroup, state: State, force_execution: bool = False) -> list[State]:
         # get all applicable effect and release statements
@@ -96,6 +130,23 @@ class Model:
     def get_states_that_model(self, condition):
         return [s for s in self.states if s.models(condition)]
 
+
+class TransitionNode:
+    
+    def __init__(self, state, children = None) -> None:
+        self.state = state
+        self.children = children
+
+    def run_program(self, program: Program, model: Model, force_execution: bool = False):
+        if len(program) == 0:
+            return
+        
+        # get next states using res and transform them into transition nodes
+        self.action = program[0][0]
+        self.agents = program[0][1]
+        self.children = [TransitionNode(s) for s in model.res(self.action, self.agents, self.state, force_execution)]
+        for child in self.children:
+            child.run_program(program[1:], model, force_execution)
 
 class GraphNode:
 
