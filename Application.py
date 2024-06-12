@@ -91,6 +91,7 @@ def signatureAction():
             signature.agents,
             statements_listbox.objects
         )
+        queries_forms.set_model(model)
     except Exception as e:
         SignatureWarningLabel.config(text=e.args[0])
         return

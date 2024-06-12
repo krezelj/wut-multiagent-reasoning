@@ -5,7 +5,7 @@ from ApplicationFiles.query_forms.ExecutableQueryForm import ExecutableQueryForm
 
 class QueriesForms:
     def __init__(self, root, statements_listbox):
-        self.agents = None
+        self.model = None
         self.root = root
         self.statements_listbox = statements_listbox
 
@@ -27,14 +27,19 @@ class QueriesForms:
         self.query_type_dropdown.config(width=20)
         self.query_type_dropdown.grid(row=0, column=0, sticky='e')
         self.answer_button = Button(self.statement_controls_frame, text="Answer", command=self.answer_query)
-        self.answer_button.grid(row=0, column=1, sticky='w')
+        self.answer_button.grid(row=1, column=0, sticky='w')
+        self.answer = Label(self.statement_controls_frame, text="")
+        self.answer.grid(row=1, column=1, sticky='w')
 
     def answer_query(self):
-        query = self.current_form.answer_query(self.agents)
-        print(query)
+        query = self.current_form.answer_query(self.model.agents)
+        result = query.answer(self.model)
+        self.answer.config(text="Answer: " + str(result))
 
-    def set_agents(self, agents):
-        self.agents = agents
+
+
+    def set_model(self, model):
+        self.model = model
 
     def show_form(self, query_type):
         # Hide the current form if it exists
