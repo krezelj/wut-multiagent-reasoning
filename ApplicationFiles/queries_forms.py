@@ -23,7 +23,7 @@ class QueriesForms:
         self.current_form = None
         # Create a frame for the statement controls
         self.statement_controls_frame = LabelFrame(root, text="Query Controls", font=15)
-        self.statement_controls_frame.grid(row=3, column=1, sticky='ew', pady=(10, 0))
+        self.statement_controls_frame.grid(row=3, column=1, sticky='new', pady=(10, 0))
 
         # Create a dropdown menu for the statement types
         self.query_type_var = StringVar()
@@ -32,9 +32,9 @@ class QueriesForms:
         self.query_type_dropdown.config(width=20)
         self.query_type_dropdown.grid(row=0, column=0, sticky='e')
         self.answer_button = Button(self.statement_controls_frame, text="Answer", command=self.answer_query)
-        self.answer_button.grid(row=1, column=0, sticky='w')
+        self.answer_button.grid(row=0, column=1, sticky='w')
         self.answer = Label(self.statement_controls_frame, text="")
-        self.answer.grid(row=1, column=1, sticky='w')
+        self.answer.grid(row=0, column=3, sticky='w',padx=(33,0))
 
     def answer_query(self):
         query = self.current_form.answer_query(self.model.agents)

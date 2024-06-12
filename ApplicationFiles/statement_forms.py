@@ -22,7 +22,7 @@ class StatementForms:
         self.current_form = None
         # Create a frame for the statement controls
         self.statement_controls_frame = LabelFrame(root, text="Statement Controls", font=15)
-        self.statement_controls_frame.grid(row=3, column=0, sticky='ew', pady=(10, 0))
+        self.statement_controls_frame.grid(row=3, column=0, sticky='new', pady=(10, 0))
 
         # Create a dropdown menu for the statement types
         self.statement_type_var = StringVar()

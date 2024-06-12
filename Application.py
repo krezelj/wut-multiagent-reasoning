@@ -104,11 +104,12 @@ def signatureAction():
 
 signatureButton = Button(root, text="Apply", command=signatureAction)
 signatureButton.config(width=30)
-signatureButton.grid(row=5, column=0, sticky="ew")
+signatureButton.grid(row=5, column=0, sticky="new")
+
 
 # Create a text box for displaying states
 initial_states_frame = LabelFrame(root, text="Initial States", width=500, font=15)
-initial_states_frame.grid(row=2, column=1, sticky='nsew', padx=10, pady=10)
+initial_states_frame.grid(row=2, column=1, sticky='nsew', padx=10)
 initial_states_frame.grid_propagate(False)
 
 # Create a text box for displaying states inside the LabelFrame

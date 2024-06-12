@@ -26,7 +26,7 @@ class ImpossibleForm(Form):
 
     def show(self):
         # Show the "Impossible" form
-        self.statement_form_frame.grid(row=4,columnspan=1, sticky='ew')  # Make the frame span two columns and take full available width
+        self.statement_form_frame.grid(row=4,columnspan=1, sticky='new')  # Make the frame span two columns and take full available width
 
     def hide(self):
         # Hide the "Impossible" form
