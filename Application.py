@@ -50,7 +50,7 @@ root.option_add("*Label.font", default_font)
 root.option_add("*Entry.font", default_font)
 setProperties(root = root)
 
-FluentInput, ActionsInput, AgentsInput, SignatureWarningLabel = signatureSection(root = root)
+FluentInput, ActionsInput, AgentsInput, SignatureWarningLabel = signatureSection(root=root)
 signature = Signature()
 # Create a frame for the listbox
 listbox_frame = LabelFrame(root, text="Statements", width=500, font=(15))  # Set a fixed width
@@ -60,40 +60,48 @@ listbox_frame.grid_propagate(False)  # Disable propagation of the size of its ch
 # Create a listbox for the statements
 statements_listbox = Listbox(listbox_frame, width=50, height=7)  # Adjust the height as needed
 statements_listbox.pack(fill='both', expand=True)
-statements_listbox.objects = []
+statements_listbox.objects = [] # domain
 
 # Create an instance of StatementForms
 statement_forms = StatementForms(root, statements_listbox)
 
+# initialize an empty Model
+model = Model([], [], [], [])
+
 
 def signatureAction():
+    global model
+    SignatureWarningLabel.after(3000, lambda: SignatureWarningLabel.config(text=""))  # Clear the text after delay
+
     SignatureWarningLabel.config(foreground="red")
     try:
          readSignature(signature, FluentInput, ActionsInput, AgentsInput)
     except Exception as e:
         SignatureWarningLabel.config(text=e.args[0])
         return
-    SignatureWarningLabel.config(text="Correct Signature",foreground="green")
-    
+    SignatureWarningLabel.config(text="Correct Signature", foreground="green")
 
-signatureButton = Button(root, text="Apply Signature", command = signatureAction)
-signatureButton.config(width=15)
-signatureButton.grid(row=1, column=1)
+    try:
+        model = Model(
+            signature.fluents,
+            signature.actions,
+            signature.agents,
+            statements_listbox.objects
+        )
+    except Exception as e:
+        SignatureWarningLabel.config(text=e.args[0])
+        return
+
+    # Update initial statements
+    display_states(model.initial_states)
+
+    SignatureWarningLabel.config(text="Model updated", foreground="green")
 
 
-# TODO: Create model from user input instead of this stub
-fluents = ['p', 'd']
-actions = ['foo']
-agents = []
+signatureButton = Button(root, text="Apply", command=signatureAction)
+signatureButton.config(width=30)
+signatureButton.grid(row=5, column=0, sticky="ew")
 
-domain = [
-    Initialisation('not(p)'),
-    Effect('foo', 'true', 'not(p)', 'p')
-]
-
-model = Model(fluents, actions, agents, domain)
-initial_states = model.initial_states
-print(initial_states)
 # Create a text box for displaying states
 initial_states_frame = LabelFrame(root, text="Initial States", width=500, font=15)
 initial_states_frame.grid(row=2, column=1, sticky='nsew', padx=10, pady=10)
@@ -102,6 +110,5 @@ initial_states_frame.grid_propagate(False)
 # Create a text box for displaying states inside the LabelFrame
 text_box = Text(initial_states_frame, wrap=tk.WORD, width=50, height=10)
 text_box.pack(fill='both', expand=True)
-# Display the initial states
-display_states(initial_states)
+
 root.mainloop()

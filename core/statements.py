@@ -28,7 +28,7 @@ class Effect:
         self.action = action.lower()
         self.agent_condition = parse_expression(agent_condition)
         self.post_condition = parse_expression(post_condition)
-        self.pre_condition = parse_expression(pre_condition) if pre_condition is not None else parse_expression('true')
+        self.pre_condition = parse_expression(pre_condition) if pre_condition else parse_expression('true')
 
 
 class Release:
@@ -38,7 +38,7 @@ class Release:
         self.action = action.lower()
         self.agent_condition = parse_expression(agent_condition)
         self.fluent = fluent.lower()
-        self.pre_condition = parse_expression(pre_condition) if pre_condition is not None else parse_expression('true')
+        self.pre_condition = parse_expression(pre_condition) if pre_condition else parse_expression('true')
 
 
 class Constraint:
