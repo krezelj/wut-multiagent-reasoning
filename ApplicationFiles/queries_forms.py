@@ -1,6 +1,9 @@
 from tkinter import *
 
+from ApplicationFiles.query_forms.AccessibilityQueryForm import AccessibilityQueryForm
 from ApplicationFiles.query_forms.ExecutableQueryForm import ExecutableQueryForm
+from ApplicationFiles.query_forms.SufficientQueryForm import SufficientQueryForm
+from ApplicationFiles.query_forms.ValueQueryForm import ValueQueryForm
 
 
 class QueriesForms:
@@ -10,10 +13,12 @@ class QueriesForms:
         self.statements_listbox = statements_listbox
 
         # Create a new frame for the query forms
-        self.query_forms_frame = Frame(root)
-        self.query_forms_frame.grid(row=4, column=1, sticky='nsew')  # Adjust the row and column as needed
+        self.query_forms_frame = root
         self.query_types = {
             "Executable": ExecutableQueryForm(self.query_forms_frame),
+            "Value": ValueQueryForm(self.query_forms_frame),
+            "Accessibility": AccessibilityQueryForm(self.query_forms_frame),
+            "Sufficiency": SufficientQueryForm(self.query_forms_frame),
         }
         self.current_form = None
         # Create a frame for the statement controls
