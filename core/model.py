@@ -94,8 +94,12 @@ class Model:
 
     def res(self, action: str, agents: AgentGroup, state: State, force_execution: bool = False) -> list[State]:
         # get all applicable effect and release statements
-        is_statement_applicable = \
-            lambda e : state.models(e.pre_condition) and agents.models(e.agent_condition) and e.action == action.lower()
+        is_statement_applicable = lambda e: (
+                state.models(e.pre_condition) and
+                agents.models(e.agent_condition) and
+                e.action == action.lower()
+        )
+
         effects = [e for e in self.effect_statements if is_statement_applicable(e)]
         releases = [e for e in self.release_statements if is_statement_applicable(e)]
 
