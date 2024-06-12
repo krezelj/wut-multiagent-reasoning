@@ -1,6 +1,8 @@
 import tkinter
 from tkinter import *
 from tkinter.font import Font
+
+from ApplicationFiles.queries_forms import QueriesForms
 from core.model import *
 from ApplicationFiles.properties import *
 from ApplicationFiles.actions import *
@@ -64,6 +66,7 @@ statements_listbox.objects = [] # domain
 
 # Create an instance of StatementForms
 statement_forms = StatementForms(root, statements_listbox)
+queries_forms = QueriesForms(root, statements_listbox)
 
 # initialize an empty Model
 model = Model([], [], [], [])
@@ -88,6 +91,7 @@ def signatureAction():
             signature.agents,
             statements_listbox.objects
         )
+        queries_forms.set_model(model)
     except Exception as e:
         SignatureWarningLabel.config(text=e.args[0])
         return
@@ -100,11 +104,12 @@ def signatureAction():
 
 signatureButton = Button(root, text="Apply", command=signatureAction)
 signatureButton.config(width=30)
-signatureButton.grid(row=5, column=0, sticky="ew")
+signatureButton.grid(row=5, column=0, sticky="new")
+
 
 # Create a text box for displaying states
 initial_states_frame = LabelFrame(root, text="Initial States", width=500, font=15)
-initial_states_frame.grid(row=2, column=1, sticky='nsew', padx=10, pady=10)
+initial_states_frame.grid(row=2, column=1, sticky='nsew', padx=10)
 initial_states_frame.grid_propagate(False)
 
 # Create a text box for displaying states inside the LabelFrame

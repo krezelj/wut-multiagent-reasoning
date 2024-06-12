@@ -30,7 +30,7 @@ class ReleaseForm(Form):
         self.add_release_button.pack(side='right')
 
     def show(self):
-        self.statement_form_frame.grid(row=4, columnspan=1, sticky='ew')
+        self.statement_form_frame.grid(row=4, columnspan=1, sticky='new')
 
     def hide(self):
         self.statement_form_frame.grid_remove()
