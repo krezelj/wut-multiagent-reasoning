@@ -6,6 +6,8 @@ from ApplicationFiles.statement_form.ImpossibleForm import ImpossibleForm
 from ApplicationFiles.statement_form.NoninertialForm import NoninertialForm
 from ApplicationFiles.statement_form.ReleaseForm import ReleaseForm
 from ApplicationFiles.statement_form.InitiallyForm import InitiallyForm
+from ApplicationFiles.statement_form.ValueForm import ValueForm
+
 
 class StatementForms:
     def __init__(self, root, statements_listbox):
@@ -15,6 +17,7 @@ class StatementForms:
             "Initially": InitiallyForm(root, statements_listbox),
             "Impossible": ImpossibleForm(root, statements_listbox),
             "Effect": EffectForm(root, statements_listbox),
+            "Value": ValueForm(root, statements_listbox),
             "Release": ReleaseForm(root, statements_listbox),
             "Always": AlwaysForm(root, statements_listbox),
             "Noninertial": NoninertialForm(root, statements_listbox),
@@ -54,8 +57,6 @@ class StatementForms:
         if selected_index:
             self.statements_listbox.objects.pop(selected_index[0])
             self.statements_listbox.delete(selected_index)
-
-
 
     def show_statement_form(self, statement_type):
         # Hide the current form if it exists

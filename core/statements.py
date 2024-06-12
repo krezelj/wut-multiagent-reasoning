@@ -4,6 +4,9 @@ from core.program import Program
 
 
 class Value:
+    # (Observable) alpha after A1 by phi1, ..., An by phin
+    #
+    # A1 by phi1, ..., An by phin - A program
 
     def __init__(self, observable: bool, condition: str, program: Program):
         self.observable = observable
@@ -22,7 +25,6 @@ class Initialisation(Value):
 class Effect:
     # A by phi causes alpha if pi
     # impossible A by phi if pi
-    
 
     def __init__(self, action: str, agent_condition: str, post_condition: str, pre_condition: Optional[str] = None):
         self.action = action.lower()
