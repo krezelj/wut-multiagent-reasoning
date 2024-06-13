@@ -85,8 +85,8 @@ class Model:
                     break
             else:
                 self.initial_states.append(state)
-        if len(self.initial_states) == 0:
-            raise Exception("No viable initials states")
+        #if len(self.initial_states) == 0:
+            #raise Exception("No viable initials states")
 
     def res(self, action: str, agents: AgentGroup, state: State, force_execution: bool = False) -> list[State]:
         # get all applicable effect and release statements
