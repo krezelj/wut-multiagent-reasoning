@@ -4,6 +4,9 @@ from core.program import Program
 
 
 class Value:
+    # (Observable) alpha after A1 by phi1, ..., An by phin
+    #
+    # A1 by phi1, ..., An by phin - A program
 
     def __init__(self, observable: bool, condition: str, program: Program):
         self.observable = observable
@@ -22,13 +25,12 @@ class Initialisation(Value):
 class Effect:
     # A by phi causes alpha if pi
     # impossible A by phi if pi
-    
 
     def __init__(self, action: str, agent_condition: str, post_condition: str, pre_condition: Optional[str] = None):
         self.action = action.lower()
         self.agent_condition = parse_expression(agent_condition)
         self.post_condition = parse_expression(post_condition)
-        self.pre_condition = parse_expression(pre_condition) if pre_condition is not None else parse_expression('true')
+        self.pre_condition = parse_expression(pre_condition) if pre_condition else parse_expression('true')
 
 
 class Release:
@@ -38,7 +40,7 @@ class Release:
         self.action = action.lower()
         self.agent_condition = parse_expression(agent_condition)
         self.fluent = fluent.lower()
-        self.pre_condition = parse_expression(pre_condition) if pre_condition is not None else parse_expression('true')
+        self.pre_condition = parse_expression(pre_condition) if pre_condition else parse_expression('true')
 
 
 class Constraint:

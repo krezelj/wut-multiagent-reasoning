@@ -80,7 +80,7 @@ class ExecutabilityQuery:
         # if necessary then all path were defined so True
         # if not necessary this statement shouldn't be reached assuming fininite programs
         # (at least one leaf must have been reached)
-        return True
+        return self.necessary
 
 
 class AccessabilityQuery:

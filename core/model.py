@@ -5,14 +5,27 @@ from core.expressions import *
 from core.agent_group import *
 
 
-class Model:
+class Singleton(type):
+    _instances = {}
 
-    def __init__(self, fluents: list[str], actions: list[str], agents: list[str], domain) -> None:
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+    
+
+class Model:
+    def __init__(self, fluents: list[str], actions: list[str], agents: list[str], domain):
+        self.set_fields(fluents, actions, agents, domain)
+
+    def set_fields(self, fluents: list[str], actions: list[str], agents: list[str], domain):
         self.fluents = [f.lower() for f in fluents]
         self.actions = [a.lower() for a in actions]
         self.agents = [a.lower() for a in agents]
         self.domain = domain
 
+        # Perform additional setup tasks
         self.split_statements()
         self.generate_states()
         self.set_nonintertial()
@@ -63,14 +76,6 @@ class Model:
             # either all satisfy and not observable or none satisfy and observable
             return not observable
 
-
-        # initial states = []
-        # for each state
-        #   for each value statement
-        #       check if any/all states after program satisfy condition
-        #       if not, break
-        #   else:
-        #       append state to inital states as all conditions were satisifed
         self.initial_states = []
         for state in self.states:
             for statement in self.value_statements:
@@ -83,19 +88,14 @@ class Model:
         if len(self.initial_states) == 0:
             raise Exception("No viable initials states")
 
-
-        # self.initial_states = []
-        # condition = And([s.condition for s in self.value_statements])
-        # for s in self.states:
-        #     if s.models(condition):
-        #         self.initial_states.append(s)
-        # if len(self.initial_states) == 0:
-        #     raise Exception("No viable initials states")
-
     def res(self, action: str, agents: AgentGroup, state: State, force_execution: bool = False) -> list[State]:
         # get all applicable effect and release statements
-        is_statement_applicable = \
-            lambda e : state.models(e.pre_condition) and agents.models(e.agent_condition) and e.action == action.lower()
+        is_statement_applicable = lambda e: (
+                state.models(e.pre_condition) and
+                agents.models(e.agent_condition) and
+                e.action == action.lower()
+        )
+
         effects = [e for e in self.effect_statements if is_statement_applicable(e)]
         releases = [e for e in self.release_statements if is_statement_applicable(e)]
 
@@ -173,3 +173,8 @@ class Graph:
             if isinstance(node.state, ImpossibleState):
                 continue
             node.find_neighbours(model, self.nodes)
+            
+            
+class ModelSingleton(Model, metaclass=Singleton):
+    def __init__(self, fluents: list[str], actions: list[str], agents: list[str], domain):
+        super().__init__(fluents, actions, agents, domain)

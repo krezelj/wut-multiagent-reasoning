@@ -76,6 +76,8 @@ class Literal(Node):
             return True
         if self.literal == 'false':
             return False
+        if self.literal == 'anyone':
+            return True
         return bool(values[self.literal])
 
 

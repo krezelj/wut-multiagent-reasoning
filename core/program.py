@@ -1,5 +1,6 @@
 from core.agent_group import AgentGroup
 
+
 class Program:
     
     def __init__(self, program: list[tuple[str, AgentGroup]]) -> None:
