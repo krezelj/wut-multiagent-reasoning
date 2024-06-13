@@ -15,7 +15,7 @@ def setProperties(root:Tk):
 
 def signatureSection(root):
     
-    group_box = LabelFrame(root, text="Signature", font=(15))
+    group_box = LabelFrame(root, text="Model Arguments", font=(15))
     SignatureWarningLabel = Label(root,text="",font=(12),foreground="red")
     SignatureWarningLabel.grid(row=0, column=0)
     

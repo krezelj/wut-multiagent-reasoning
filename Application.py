@@ -72,13 +72,14 @@ model = ModelSingleton([], [], [], [])
 
 def signatureAction():
     global model
-    SignatureWarningLabel.after(3000, lambda: SignatureWarningLabel.config(text=""))  # Clear the text after delay
+    SignatureWarningLabel.after(10000, lambda: SignatureWarningLabel.config(text=""))  # Clear the text after delay
 
     SignatureWarningLabel.config(foreground="red")
     try:
          readSignature(signature, FluentInput, ActionsInput, AgentsInput)
     except Exception as e:
         SignatureWarningLabel.config(text=e.args[0])
+        # SignatureWarningLabel.config("Could not parse model arguments\ndid you provide all fluents/actions/agents used in domain", foreground="red")
         return
     SignatureWarningLabel.config(text="Correct Signature", foreground="green")
 
@@ -91,7 +92,8 @@ def signatureAction():
         )
         queries_forms.set_model(model)
     except Exception as e:
-        SignatureWarningLabel.config(text=e.args[0])
+        # SignatureWarningLabel.config(text=e.args[0], foreground="red")
+        SignatureWarningLabel.config(text="Could not parse model arguments\ndid you provide all fluents/actions/agents used in domain?", foreground="red")
         return
 
     # Update initial statements
